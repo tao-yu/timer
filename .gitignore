@@ -1,0 +1,8 @@
+*.csv
+*.pdf
+*.xlsx
+*.zip
+*.py
+misc/
+.vscode
+scratchpad
