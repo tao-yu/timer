@@ -6,24 +6,28 @@ document.querySelectorAll('.keypad-button').forEach(item => {
         // append the key number to the input field
         let key = event.target.innerText;
 
-        if (key == "Submit" || key == "Backspace") {
-            console.log(key)
+        if (key == "Backspace") {
+            timeStr = timeStr.slice(0, timeStr.length - 1)
         }
-        else {
-            if (timeStr.length < 6) {
-                timeStr += key;
-            }
-            let newTimeStr = formatUserTime(timeStr);
-            document.getElementById("time-entry").innerHTML = newTimeStr;
-            let centiseconds = getTimeCenti(newTimeStr)
-            console.log(centiseconds)
-            console.log(formatCenti(centiseconds))
+        else if (key == "Submit") {
+            timeStr = ""
+        }
+        else if (timeStr.length < 6) {
+            timeStr += key;
+        }
+        let newTimeStr = formatUserTime(timeStr);
+        document.getElementById("time-entry").innerHTML = newTimeStr == ""? "&nbsp;": newTimeStr;
+        let centiseconds = getTimeCenti(newTimeStr)
+        console.log(centiseconds)
+        console.log(formatCenti(centiseconds))
 
-        }
     })
 })
 
 function formatUserTime(oldTimeStr) {
+    if (oldTimeStr == ""){
+        return ""
+    }
 
     let newTimeStr = oldTimeStr;
     if (oldTimeStr.length == 1) {
@@ -43,6 +47,9 @@ function formatUserTime(oldTimeStr) {
 }
 
 function getTimeCenti(timeStr) {
+    if (timeStr == ""){
+        return 0
+    }
     /* Note that this function assumes a clean input */
     if (timeStr.includes(":")) {
         let parts = timeStr.split(":");
