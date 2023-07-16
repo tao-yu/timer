@@ -1,3 +1,5 @@
+import { randomScrambleForEvent } from "https://cdn.cubing.net/js/cubing/scramble";
+
 class Timer {
     constructor(timeData) {
         this.timeData = timeData
@@ -29,7 +31,7 @@ let timeData = timeDataJSON == null ? null : new dfd.DataFrame(timeDataJSON)
 let timer = new Timer(timeData);
 
 document.querySelectorAll('.keypad-button').forEach(item => {
-    item.addEventListener('click', event => {
+    item.addEventListener('click', async (event) => {
         // append the key number to the input field
         let key = event.target.innerText;
 
@@ -44,6 +46,7 @@ document.querySelectorAll('.keypad-button').forEach(item => {
             let penalty = 0;
             timer.appendData(centi, time, penalty, scramble)
             timer.timeStr = ""
+            document.getElementById("scramble").innerHTML = await randomScrambleForEvent("333")
         }
         else if (timer.timeStr.length < 6) {
             timer.timeStr += key;

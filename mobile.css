@@ -1,6 +1,6 @@
-body {
+/*body {
     overflow: hidden
-}
+}*/
 
 #parent-container {
     display: flex;
@@ -82,7 +82,6 @@ table {
     display: flex;
     flex-direction: row;
     flex: 0 0 auto;
-    background: blue;
 }
 #keypad-numbers {
     flex-direction: column;
