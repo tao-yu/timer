@@ -18,8 +18,6 @@ document.querySelectorAll('.keypad-button').forEach(item => {
         let newTimeStr = formatUserTime(timeStr);
         document.getElementById("time-entry").innerHTML = newTimeStr == ""? "&nbsp;": newTimeStr;
         let centiseconds = getTimeCenti(newTimeStr)
-        console.log(centiseconds)
-        console.log(formatCenti(centiseconds))
 
     })
 })
