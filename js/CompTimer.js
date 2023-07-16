@@ -1,5 +1,32 @@
-var timeStr = ""
+class Timer {
+    constructor(timeData) {
+        this.timeData = timeData
+        this.timeStr = ""
+    }
 
+    appendData(centi, time, penalty, scramble) {
+        if (this.timeData == null) {
+            this.timeData = new dfd.DataFrame([[centi, time, penalty, scramble]], { "columns": ["centi", "time", "penalty", "scramble"] })
+        } else {
+            this.timeData = this.timeData.append([centi, time, penalty, scramble], [this.timeData.length]);
+            this.timeData = this.timeData.resetIndex();
+        }
+
+    }
+
+    saveData() {
+        localStorage.setItem("timeData", JSON.stringify(dfd.toJSON(this.timeData, {"format":"row"})))
+    }
+
+    resetData(){
+        localStorage.setItem("timeData", null)
+        this.timeData = null
+    }
+}
+
+let timeDataJSON = JSON.parse(localStorage.getItem("timeData"))
+let timeData = timeDataJSON == null ? null : new dfd.DataFrame(timeDataJSON)
+let timer = new Timer(timeData);
 
 document.querySelectorAll('.keypad-button').forEach(item => {
     item.addEventListener('click', event => {
@@ -7,23 +34,23 @@ document.querySelectorAll('.keypad-button').forEach(item => {
         let key = event.target.innerText;
 
         if (key == "Backspace") {
-            timeStr = timeStr.slice(0, timeStr.length - 1)
+            timer.timeStr = timer.timeStr.slice(0, timer.timeStr.length - 1)
         }
         else if (key == "Submit") {
-            timeStr = ""
+            timer.timeStr = ""
         }
-        else if (timeStr.length < 6) {
-            timeStr += key;
+        else if (timer.timeStr.length < 6) {
+            timer.timeStr += key;
         }
-        let newTimeStr = formatUserTime(timeStr);
-        document.getElementById("time-entry").innerHTML = newTimeStr == ""? "&nbsp;": newTimeStr;
+        let newTimeStr = formatUserTime(timer.timeStr);
+        document.getElementById("time-entry").innerHTML = newTimeStr == "" ? "&nbsp;" : newTimeStr;
         let centiseconds = getTimeCenti(newTimeStr)
 
     })
 })
 
 function formatUserTime(oldTimeStr) {
-    if (oldTimeStr == ""){
+    if (oldTimeStr == "") {
         return ""
     }
 
@@ -45,7 +72,7 @@ function formatUserTime(oldTimeStr) {
 }
 
 function getTimeCenti(timeStr) {
-    if (timeStr == ""){
+    if (timeStr == "") {
         return 0
     }
     /* Note that this function assumes a clean input */
@@ -78,3 +105,7 @@ function formatCenti(centiseconds) {
     timeString += '.' + (finalCentiseconds < 10 ? '0' : '') + finalCentiseconds.toFixed(0);
     return timeString;
 }
+
+window.addEventListener('beforeunload', function (event) {
+    timer.saveData();
+});
