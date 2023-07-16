@@ -1,3 +1,7 @@
+body {
+    overflow: hidden
+}
+
 #parent-container {
     display: flex;
     flex-direction: column;
@@ -100,4 +104,33 @@ table {
 
 .keypad-control {
     flex: 1;
+}
+
+#right-popup {
+    display: none;
+    position: fixed;
+    top: 12%;
+    left: 5%;
+    right: 5%;
+    width: 90%;
+    height: 80vh;
+    z-index: 9999;
+    background-color: white;
+    border: 1px solid black;
+    font-family: 'Courier New', Courier, monospace;
+    overflow: auto;
+}
+
+#left-popup {
+    display: none;
+    position: fixed;
+    top: 12%;
+    left: 5%;
+    right: 5%;
+    width: 90%;
+    height: 80vh;
+    z-index: 9999;
+    background-color: white;
+    border: 1px solid black;
+    font-family: 'Courier New', Courier, monospace;
 }

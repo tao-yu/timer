@@ -13,9 +13,9 @@
 
     <div id="parent-container">
         <div id="top-buttons">
-            <button class="top-button">Settings</button>
+            <button class="top-button" id="left-popup-button">Settings</button>
             <button class="top-button">Puzzle</button>
-            <button class="top-button">Times</button>
+            <button class="top-button" id="right-popup-button">Times</button>
         </div>
 
 
@@ -87,6 +87,14 @@
         </div>
 
     </div>
+
+    <div id="left-popup">
+        <p id="settings-display">Settings</p>
+    </div>
+    <pre>
+    <div id="right-popup"><p id="times-display">Times</p></div>
+</pre>
+
     <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
     <script src="js/CompTimer.js"></script>
 

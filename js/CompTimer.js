@@ -15,10 +15,10 @@ class Timer {
     }
 
     saveData() {
-        localStorage.setItem("timeData", JSON.stringify(dfd.toJSON(this.timeData, {"format":"row"})))
+        localStorage.setItem("timeData", JSON.stringify(dfd.toJSON(this.timeData, { "format": "row" })))
     }
 
-    resetData(){
+    resetData() {
         localStorage.setItem("timeData", null)
         this.timeData = null
     }
@@ -37,6 +37,12 @@ document.querySelectorAll('.keypad-button').forEach(item => {
             timer.timeStr = timer.timeStr.slice(0, timer.timeStr.length - 1)
         }
         else if (key == "Submit") {
+            let newTimeStr = formatUserTime(timer.timeStr);
+            let centi = getTimeCenti(newTimeStr);
+            let time = getCurrentTime();
+            let scramble = document.getElementById("scramble").innerHTML;
+            let penalty = 0;
+            timer.appendData(centi, time, penalty, scramble)
             timer.timeStr = ""
         }
         else if (timer.timeStr.length < 6) {
@@ -48,6 +54,36 @@ document.querySelectorAll('.keypad-button').forEach(item => {
 
     })
 })
+
+
+const leftPopUpButton = document.getElementById("left-popup-button");
+const rightPopUpButton = document.getElementById("right-popup-button");
+leftPopUpButton.addEventListener("click", function () {
+
+    const leftPopUp = document.getElementById("left-popup");
+    const rightPopUp = document.getElementById("right-popup");
+    if (leftPopUp.style.display == "block") {
+        leftPopUp.style.display = "none";
+    }
+    else {
+        leftPopUp.style.display = "block";
+        rightPopUp.style.display = "none";
+    }
+});
+
+rightPopUpButton.addEventListener("click", function () {
+
+    const leftPopUp = document.getElementById("left-popup");
+    const rightPopUp = document.getElementById("right-popup");
+    if (rightPopUp.style.display == "block") {
+        rightPopUp.style.display = "none";
+    }
+    else {
+        rightPopUp.style.display = "block";
+        leftPopUp.style.display = "none";
+        rightPopUp.innerHTML = timer.timeData.toString()//.replace(/\n/g, '<br>')
+    }
+});
 
 function formatUserTime(oldTimeStr) {
     if (oldTimeStr == "") {
@@ -109,3 +145,20 @@ function formatCenti(centiseconds) {
 window.addEventListener('beforeunload', function (event) {
     timer.saveData();
 });
+
+
+function getCurrentTime() {
+    const now = new Date();
+    const options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+    };
+
+    const currentTime = now.toLocaleString('en-US', options).replace(',', '');
+    return currentTime;
+}
