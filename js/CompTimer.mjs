@@ -1,5 +1,8 @@
 import { randomScrambleForEvent } from "https://cdn.cubing.net/js/cubing/scramble";
 
+document.getElementById("scramble").innerHTML = await randomScrambleForEvent("333")
+
+console.log(getCurrentTime())
 class Timer {
     constructor(timeData) {
         this.timeData = timeData
