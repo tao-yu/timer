@@ -92,9 +92,38 @@ rightPopUpButton.addEventListener("click", function () {
     }
 });
 
-document.getElementById("reset-times").addEventListener("click", function(){
+document.getElementById("reset-times").addEventListener("click", function () {
     timer.resetData();
 })
+
+let timeout1, timeout2, timeout3;
+let inspectionArea = document.getElementById("inspection-area")
+inspectionArea.addEventListener("click", function () {
+    if (["inspection1", "inspection2", "inspection3"].some(item => this.classList.contains(item))) {
+        this.classList = [];
+        clearTimeout(timeout1)
+        clearTimeout(timeout2)
+        clearTimeout(timeout3)
+    }
+    else {
+        this.classList.add("inspection1")
+        timeout1 = setTimeout(() => {
+            this.classList.remove('inspection1');
+            this.classList.add('inspection2');
+
+            timeout2 = setTimeout(() => {
+                this.classList.remove('inspection2');
+                this.classList.add('inspection3');
+
+                timeout3 = setTimeout(() => {
+                    this.classList.remove('inspection3');
+                }, 3000); // 3 seconds (red to green)
+            }, 4000); // 4 seconds (yellow to red)
+        }, 8000); // 8 seconds (green to yellow)
+    }
+
+})
+
 
 function formatUserTime(oldTimeStr) {
     if (oldTimeStr == "") {
@@ -175,7 +204,7 @@ function getCurrentTime() {
 }
 
 function updateRoundResults() {
-    if (timer.timeData == null){
+    if (timer.timeData == null) {
         return
     }
     let tableHTML = '<table>'
@@ -188,32 +217,32 @@ function updateRoundResults() {
 
     for (let i = 0; i < numRowsTable; i++) {
 
-        let a = startIndex + solvesPerRound*i;
+        let a = startIndex + solvesPerRound * i;
         let b = Math.min(a + solvesPerRound, numRows);
-        if (a < 0){
+        if (a < 0) {
             continue;
         }
         let round;
 
-        if (a !=b){
-            round = timer.timeData.iloc({"rows":[`${a}:${b}`]})
+        if (a != b) {
+            round = timer.timeData.iloc({ "rows": [`${a}:${b}`] })
         } else {
-            round = timer.timeData.iloc({"rows":[a]})
+            round = timer.timeData.iloc({ "rows": [a] })
         }
 
-        let roundJSON = dfd.toJSON(round, {"format":"column"})
+        let roundJSON = dfd.toJSON(round, { "format": "column" })
 
         tableHTML += '<tr class="table-row">';
 
-        for (let j = 0; j < solvesPerRound+1; j++) {
-            if (j == solvesPerRound){
+        for (let j = 0; j < solvesPerRound + 1; j++) {
+            if (j == solvesPerRound) {
                 tableHTML += '<td class="table-cell">' + calculateAvg(round) + '</td>';
 
             }
             else {
                 try {
                     tableHTML += '<td class="table-cell">' + formatCenti(roundJSON[j]['centi']) + '</td>';
-                } catch (err){
+                } catch (err) {
                     tableHTML += '<td class="table-cell"></td>';
                 }
             }
@@ -226,12 +255,14 @@ function updateRoundResults() {
     document.getElementById("times-tables").innerHTML = tableHTML;
 }
 
-function calculateAvg(dfRound){
-    let centiList = dfd.toJSON(dfRound, {"format":"row"})['centi']
-    if (centiList.length == 5){
-        return formatCenti(Math.round((centiList.reduce((a, b) => a + b, 0) - Math.max.apply(Math, centiList) - Math.min.apply(Math, centiList))/3));
+function calculateAvg(dfRound) {
+    let centiList = dfd.toJSON(dfRound, { "format": "row" })['centi']
+    if (centiList.length == 5) {
+        return formatCenti(Math.round((centiList.reduce((a, b) => a + b, 0) - Math.max.apply(Math, centiList) - Math.min.apply(Math, centiList)) / 3));
     }
-    else{
+    else {
         return ""
     }
 }
+
+

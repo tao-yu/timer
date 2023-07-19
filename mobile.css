@@ -31,11 +31,11 @@ html, body {
 }
 
 #times-tables{
-    flex: auto;
+    flex: 0 0 auto;
 }
 
 #inspection-area {
-    flex: 1;
+    flex: 2;
     display: flex;
     flex-direction: column;
 }
@@ -146,4 +146,16 @@ table {
     background-color: white;
     border: 1px solid black;
     font-family: 'Courier New', Courier, monospace;
+}
+
+.inspection1 {
+  background-color: rgba(28, 151, 28, 0.329);
+}
+
+.inspection2 {
+  background-color: rgba(201, 204, 24, 0.507);
+}
+
+.inspection3 {
+  background-color: rgba(255, 0, 0, 0.473);
 }
