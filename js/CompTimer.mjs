@@ -32,7 +32,7 @@ class Timer {
 let timeDataJSON = JSON.parse(localStorage.getItem("timeData"))
 let timeData = timeDataJSON == null ? null : new dfd.DataFrame(timeDataJSON)
 let timer = new Timer(timeData);
-
+updateRoundResults()
 document.querySelectorAll('.keypad-button').forEach(item => {
     item.addEventListener('click', async (event) => {
         // append the key number to the input field
@@ -197,14 +197,14 @@ function updateRoundResults() {
 
         for (let j = 0; j < solvesPerRound+1; j++) {
             if (j == solvesPerRound){
-                tableHTML += '<td class="table-column">' + "avg" + '</td>';
+                tableHTML += '<td class="table-cell">' + calculateAvg(round) + '</td>';
 
             }
             else {
                 try {
-                    tableHTML += '<td class="table-column">' + formatCenti(roundJSON[j]['centi']) + '</td>';
+                    tableHTML += '<td class="table-cell">' + formatCenti(roundJSON[j]['centi']) + '</td>';
                 } catch (err){
-                    tableHTML += '<td class="table-column"></td>';
+                    tableHTML += '<td class="table-cell"></td>';
                 }
             }
         }
@@ -217,5 +217,11 @@ function updateRoundResults() {
 }
 
 function calculateAvg(dfRound){
-
+    let centiList = dfd.toJSON(dfRound, {"format":"row"})['centi']
+    if (centiList.length == 5){
+        return formatCenti(Math.round((centiList.reduce((a, b) => a + b, 0) - Math.max.apply(Math, centiList) - Math.min.apply(Math, centiList))/3));
+    }
+    else{
+        return ""
+    }
 }
