@@ -50,6 +50,7 @@ document.querySelectorAll('.keypad-button').forEach(item => {
             timer.appendData(centi, time, penalty, scramble)
             timer.timeStr = ""
             document.getElementById("scramble").innerHTML = await randomScrambleForEvent("333")
+            updateRoundResults();
         }
         else if (timer.timeStr.length < 6) {
             timer.timeStr += key;
@@ -167,4 +168,54 @@ function getCurrentTime() {
 
     const currentTime = now.toLocaleString('en-US', options).replace(',', '');
     return currentTime;
+}
+
+function updateRoundResults() {
+    let tableHTML = '<table>'
+    let solvesPerRound = 5;
+    let numRows = timer.timeData.shape[0];
+    let lastIndex = numRows - 1
+    let lastFinal = lastIndex - lastIndex % solvesPerRound;
+    let numRowsTable = 3;
+    let startIndex = lastFinal - (numRowsTable - 1) * solvesPerRound;
+
+    for (let i = 0; i < numRowsTable; i++) {
+
+        let a = startIndex + solvesPerRound*i;
+        let b = Math.min(a + solvesPerRound, numRows);
+        let round;
+
+        if (a !=b){
+            round = timer.timeData.iloc({"rows":[`${a}:${b}`]})
+        } else {
+            round = timer.timeData.iloc({"rows":[a]})
+        }
+
+        let roundJSON = dfd.toJSON(round, {"format":"column"})
+
+        tableHTML += '<tr class="table-row">';
+
+        for (let j = 0; j < solvesPerRound+1; j++) {
+            if (j == solvesPerRound){
+                tableHTML += '<td class="table-column">' + "avg" + '</td>';
+
+            }
+            else {
+                try {
+                    tableHTML += '<td class="table-column">' + formatCenti(roundJSON[j]['centi']) + '</td>';
+                } catch (err){
+                    tableHTML += '<td class="table-column"></td>';
+                }
+            }
+        }
+
+        tableHTML += '</tr>';
+    }
+
+    tableHTML += '</table>';
+    document.getElementById("times-tables").innerHTML = tableHTML;
+}
+
+function calculateAvg(dfRound){
+
 }

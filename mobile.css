@@ -3,7 +3,6 @@ html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background:aqua;
 }
 #parent-container {
 
@@ -73,20 +72,24 @@ table {
 }
 
 .table-cell:last-child {
-    border-left: 1px solid red;
+    border-left: 1px solid black;
 }
 
 #scramble {
     text-align: center;
+    font-size: x-large;
+    font-family: 'Courier New', Courier, monospace;
 }
 .key {
     flex: 1;    
-    aspect-ratio: 16/9;
+    aspect-ratio: 11/9;
+    font-size: x-large;
 }
 
 #zerokey {
     flex: 1;
-    aspect-ratio: 48/9;
+    aspect-ratio: 33/9;
+    font-size: x-large;
 }
 
 #keypad {
