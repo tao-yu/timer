@@ -32,7 +32,7 @@ class Timer {
 let timeDataJSON = JSON.parse(localStorage.getItem("timeData"))
 let timeData = timeDataJSON == null ? null : new dfd.DataFrame(timeDataJSON)
 let timer = new Timer(timeData);
-updateRoundResults()
+updateRoundResults();
 document.querySelectorAll('.keypad-button').forEach(item => {
     item.addEventListener('click', async (event) => {
         // append the key number to the input field
@@ -91,6 +91,10 @@ rightPopUpButton.addEventListener("click", function () {
         rightPopUp.innerHTML = timer.timeData.toString()//.replace(/\n/g, '<br>')
     }
 });
+
+document.getElementById("reset-times").addEventListener("click", function(){
+    timer.resetData();
+})
 
 function formatUserTime(oldTimeStr) {
     if (oldTimeStr == "") {
@@ -171,6 +175,9 @@ function getCurrentTime() {
 }
 
 function updateRoundResults() {
+    if (timer.timeData == null){
+        return
+    }
     let tableHTML = '<table>'
     let solvesPerRound = 5;
     let numRows = timer.timeData.shape[0];
@@ -183,6 +190,9 @@ function updateRoundResults() {
 
         let a = startIndex + solvesPerRound*i;
         let b = Math.min(a + solvesPerRound, numRows);
+        if (a < 0){
+            continue;
+        }
         let round;
 
         if (a !=b){
