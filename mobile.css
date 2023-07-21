@@ -47,6 +47,8 @@ html, body {
 #progress-bar {
     background-color: green;
     flex: 0.1;
+    width: 0%;
+    margin: 1px
 }
 
 #time-entry {
