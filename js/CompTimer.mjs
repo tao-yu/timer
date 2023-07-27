@@ -97,32 +97,33 @@ document.getElementById("reset-times").addEventListener("click", function () {
 })
 
 
+
 const timesTables = document.getElementById('times-tables');
 
 timesTables.addEventListener('click', (event) => {
-  if (event.target.classList.contains('table-cell')) {
-    // Your event handling code here
-    let solveindex = parseInt(event.target.dataset.solveindex);
+    if (event.target.classList.contains('table-cell')) {
+        // Your event handling code here
+        let solveindex = parseInt(event.target.dataset.solveindex);
 
-    let popup = document.getElementById("edit-popup");
-    let solveNum = document.getElementById("solve-num")
-    let timeEditDisplay = document.getElementById("time-edit-display")
-    let scramblePopupDisplay = document.getElementById("scramble-popup-display")
-    let dnf = document.getElementById("dnf")
-    popup.style.display = "block";
-    let rowDict = dfd.toJSON(timer.timeData.iloc({"rows":[solveindex]}), {"format":"column"})[0]
-    solveNum.innerHTML = solveindex;
-    scramblePopupDisplay.innerHTML = rowDict['scramble']
-    timeEditDisplay.innerHTML = formatCenti(rowDict['centi'])
+        let popup = document.getElementById("edit-popup");
+        let solveNum = document.getElementById("solve-num")
+        let timeEditDisplay = document.getElementById("time-edit-display")
+        let scramblePopupDisplay = document.getElementById("scramble-popup-display")
+        let dnf = document.getElementById("dnf")
+        popup.style.display = "block";
+        let rowDict = dfd.toJSON(timer.timeData.iloc({ "rows": [solveindex] }), { "format": "column" })[0]
+        solveNum.innerHTML = solveindex;
+        scramblePopupDisplay.innerHTML = rowDict['scramble']
+        timeEditDisplay.innerHTML = formatCenti(rowDict['centi'])
 
-    
-    //console.log(`${timer.timeData.iloc({"rows":[solveindex]})}`);
-  }
+
+        //console.log(`${timer.timeData.iloc({"rows":[solveindex]})}`);
+    }
 });
 
 document.getElementById("close-edit-display").addEventListener(
     "click",
-    function(){
+    function () {
 
         let popup = document.getElementById("edit-popup");
         popup.style.display = "none"
@@ -215,6 +216,14 @@ function formatCenti(centiseconds) {
     return timeString;
 }
 
+
+function changeAt(df, index, col, newval) {
+    let newJSON = dfd.toJSON(df, { "format": "rows" });
+    newJSON[index][col] = newval;
+    let newdf = new dfd.DataFrame(newJSON);
+    return newdf;
+}
+
 window.addEventListener('beforeunload', function (event) {
     timer.saveData();
 });
@@ -273,7 +282,7 @@ function updateRoundResults() {
             }
             else {
                 try {
-                    let solveIndex = a+j;
+                    let solveIndex = a + j;
                     tableHTML += `<td class="table-cell" data-solveindex="${solveIndex}">` + formatCenti(roundJSON[j]['centi']) + '</td>';
                 } catch (err) {
                     tableHTML += '<td class="table-cell"></td>';
