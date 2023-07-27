@@ -96,6 +96,39 @@ document.getElementById("reset-times").addEventListener("click", function () {
     timer.resetData();
 })
 
+
+const timesTables = document.getElementById('times-tables');
+
+timesTables.addEventListener('click', (event) => {
+  if (event.target.classList.contains('table-cell')) {
+    // Your event handling code here
+    let solveindex = parseInt(event.target.dataset.solveindex);
+
+    let popup = document.getElementById("edit-popup");
+    let solveNum = document.getElementById("solve-num")
+    let timeEditDisplay = document.getElementById("time-edit-display")
+    let scramblePopupDisplay = document.getElementById("scramble-popup-display")
+    let dnf = document.getElementById("dnf")
+    popup.style.display = "block";
+    let rowDict = dfd.toJSON(timer.timeData.iloc({"rows":[solveindex]}), {"format":"column"})[0]
+    solveNum.innerHTML = solveindex;
+    scramblePopupDisplay.innerHTML = rowDict['scramble']
+    timeEditDisplay.innerHTML = formatCenti(rowDict['centi'])
+
+    
+    //console.log(`${timer.timeData.iloc({"rows":[solveindex]})}`);
+  }
+});
+
+document.getElementById("close-edit-display").addEventListener(
+    "click",
+    function(){
+
+        let popup = document.getElementById("edit-popup");
+        popup.style.display = "none"
+    }
+)
+
 let timeout1, timeout2, timeout3;
 let inspectionArea = document.getElementById("inspection-area")
 inspectionArea.addEventListener("click", function () {
@@ -237,11 +270,11 @@ function updateRoundResults() {
         for (let j = 0; j < solvesPerRound + 1; j++) {
             if (j == solvesPerRound) {
                 tableHTML += '<td class="table-cell">' + calculateAvg(round) + '</td>';
-
             }
             else {
                 try {
-                    tableHTML += '<td class="table-cell">' + formatCenti(roundJSON[j]['centi']) + '</td>';
+                    let solveIndex = a+j;
+                    tableHTML += `<td class="table-cell" data-solveindex="${solveIndex}">` + formatCenti(roundJSON[j]['centi']) + '</td>';
                 } catch (err) {
                     tableHTML += '<td class="table-cell"></td>';
                 }
