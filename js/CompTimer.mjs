@@ -46,6 +46,7 @@ document.querySelectorAll('.keypad-button').forEach(item => {
                 let newTimeStr = formatUserTime(timer.timeStr);
                 let centi = getTimeCenti(newTimeStr);
                 timer.timeData = changeAt(timer.timeData, parseInt(document.getElementById("solve-num").innerHTML), "centi", centi)
+                timer.timeData = changeAt(timer.timeData, parseInt(document.getElementById("solve-num").innerHTML), "penalty", 0)
                 document.getElementById("time-edit-display").innerHTML = formatCenti(centi)
                 timer.timeStr = ""
                 updateRoundResults();
@@ -128,12 +129,16 @@ timesTables.addEventListener('click', (event) => {
         let rowDict = dfd.toJSON(timer.timeData.iloc({ "rows": [solveindex] }), { "format": "column" })[0]
         solveNum.innerHTML = solveindex;
         scramblePopupDisplay.innerHTML = rowDict['scramble']
-        timeEditDisplay.innerHTML = formatCenti(rowDict['centi'])
+        timeEditDisplay.innerHTML = rowDict['penalty'] == "DNF"? formatDNF(formatCenti(rowDict['centi'])):formatCenti(rowDict['centi'])
 
 
         //console.log(`${timer.timeData.iloc({"rows":[solveindex]})}`);
     }
 });
+
+function formatDNF(time){
+    return `DNF (${time})`
+}
 
 document.getElementById("close-edit-display").addEventListener(
     "click",
@@ -141,6 +146,23 @@ document.getElementById("close-edit-display").addEventListener(
 
         let popup = document.getElementById("edit-popup");
         popup.style.display = "none"
+    }
+)
+
+document.getElementById("dnf").addEventListener(
+    "click",
+    function () {
+        let solveindex = parseInt(document.getElementById("solve-num").innerHTML)
+        let timeEditDisplay = document.getElementById("time-edit-display")
+        if (timer.timeData.at(solveindex, "penalty") == "DNF"){
+            timer.timeData = changeAt(timer.timeData, solveindex, "penalty", 0)
+            timeEditDisplay.innerHTML = formatCenti(timer.timeData.at(solveindex, "centi"))
+        } else {
+            timer.timeData = changeAt(timer.timeData, solveindex, "penalty", "DNF")
+            timeEditDisplay.innerHTML = formatDNF(formatCenti(timer.timeData.at(solveindex, "centi")))
+        }
+        updateRoundResults();
+
     }
 )
 
@@ -297,7 +319,9 @@ function updateRoundResults() {
             else {
                 try {
                     let solveIndex = a + j;
-                    tableHTML += `<td class="table-cell" data-solveindex="${solveIndex}">` + formatCenti(roundJSON[j]['centi']) + '</td>';
+                    let timeStr = roundJSON[j]['penalty'] == "DNF"? "DNF": formatCenti(roundJSON[j]['centi']) 
+
+                    tableHTML += `<td class="table-cell" data-solveindex="${solveIndex}">` + timeStr + '</td>';
                 } catch (err) {
                     tableHTML += '<td class="table-cell"></td>';
                 }
