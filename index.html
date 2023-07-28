@@ -51,11 +51,12 @@
 
         <div id="inspection-area">
             <div id="scramble">Loading...</div>
-            <p id="meanofavg"></p>
-            <p id="wpabpa"></p>
+            <div id="stats">
+                <p id="wpabpa" class="stats"></p>
+                <p id="meanofavg" class="stats"></p>
+            </div>
             <div id="empty-space"></div>
             <p id="time-entry">&nbsp;</p>
-            <div id="progress-bar"></div>
         </div>
 
         <div id="keypad">
@@ -93,10 +94,11 @@
     <div id="left-popup">
         <p id="settings-display">Settings</p>
         <button id="reset-times">Reset Times</button>
-        <label for="useBPA" >Show WPA/BPA:</label>
+        <label for="useBPA">Show WPA/BPA:</label>
         <input type="checkbox" id="useBPA" name="useBPA" checked>
         <br>
-        Warning: exporting of times is not yet supported and only the last 25 solves are saved. Use with the understanding that data may be lost.
+        Warning: exporting of times is not yet supported and only the last 25 solves are saved. Use with the
+        understanding that data may be lost.
 
     </div>
     <pre>
@@ -105,7 +107,11 @@
     </pre>
     <div id="edit-popup">
         <div id="time-display-div">
-            <p id="solve-num"></p><p>.&nbsp;&nbsp;</p><p id="time-edit-display"></p><p>&nbsp;&nbsp;</p><p id="scramble-popup-display"></p>
+            <p id="solve-num"></p>
+            <p>.&nbsp;&nbsp;</p>
+            <p id="time-edit-display"></p>
+            <p>&nbsp;&nbsp;</p>
+            <p id="scramble-popup-display"></p>
         </div>
         <div id="edit-buttons">
             <button id="dnf" class="edit-button">DNF</button>

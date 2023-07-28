@@ -21,7 +21,7 @@ html, body {
 
 .top-button {
     flex-grow: 1;
-    aspect-ratio: 16/9;
+    aspect-ratio: 16/7;
     font-size: x-large;
 }
 
@@ -48,7 +48,7 @@ html, body {
 #meanofavg, #wpabpa {
     font-family: Arial, Helvetica, sans-serif;
     margin:1px;
-    text-align: right;
+    text-align: center;
 }
 
 
@@ -71,9 +71,9 @@ table {
 }
 
 .table-cell {
-    font-size: small;
+    font-size: large;
     border-bottom: 1px solid #000;
-    padding: 10px;
+    padding: 1px;
     aspect-ratio: 10/2;
     white-space: nowrap;
     overflow: hidden;
@@ -200,5 +200,15 @@ table {
 
 .inspection3 {
   background-color: rgba(255, 0, 0, 0.473);
+}
+
+#stats {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.stats {
+    flex: 1
 }
 
