@@ -314,6 +314,15 @@ function updateRoundResults() {
 
         tableHTML += '<tr class="table-row">';
         let roundAvg = calculateAvg(round);
+        if (roundAvg.includes("bpa")) {
+            if (document.getElementById("useBPA").checked){
+                document.getElementById("wpabpa").innerHTML = roundAvg;
+            }
+            roundAvg = "";
+        }
+        else {
+            document.getElementById("wpabpa").innerHTML = "";
+        }
         lastTen.push(roundAvg)
         for (let j = 0; j < solvesPerRound + 1; j++) {
             if (j == solvesPerRound) {
@@ -373,6 +382,25 @@ function calculateAvg(dfRound) {
         }
         return formatCenti(Math.round((centiList.reduce((a, b) => a + b, 0) - Math.max.apply(Math, centiList) - Math.min.apply(Math, centiList)) / 3));
     }
+
+    if (centiList.length == 4){
+
+        let DNFList = dfJSON['penalty']
+        let numDNFs = DNFList.filter(item => item === "DNF").length;
+
+        if (numDNFs > 1){
+            return "";
+        }
+        if (numDNFs == 1){
+            let nonDNFs = centiList.filter((_, index) =>DNFList[index] !== "DNF")
+            let bpa = formatCenti(Math.round((nonDNFs.reduce((a, b) => a + b, 0)) / 3)); 
+            return `bpa: ${bpa} wpa: DNF`
+        }
+        let bpa = formatCenti(Math.round((centiList.reduce((a, b) => a + b, 0) - Math.max.apply(Math, centiList)) / 3));
+        let wpa = formatCenti(Math.round((centiList.reduce((a, b) => a + b, 0) - Math.min.apply(Math, centiList)) / 3));
+        return `bpa: ${bpa} wpa: ${wpa}`
+    }
+
     else {
         return ""
     }

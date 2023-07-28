@@ -155,7 +155,7 @@ table {
     z-index: 9999;
     background-color: white;
     border: 1px solid black;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: Arial, Helvetica, sans-serif
 }
 
 #edit-popup {
