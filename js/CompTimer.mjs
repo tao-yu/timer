@@ -336,8 +336,20 @@ function updateRoundResults() {
 }
 
 function calculateAvg(dfRound) {
-    let centiList = dfd.toJSON(dfRound, { "format": "row" })['centi']
+    let dfJSON = dfd.toJSON(dfRound, { "format": "row" })
+    let centiList = dfJSON['centi']
+
     if (centiList.length == 5) {
+        let DNFList = dfJSON['penalty']
+        let numDNFs = DNFList.filter(item => item === "DNF").length;
+
+        if (numDNFs > 1){
+            return "DNF";
+        }
+        if (numDNFs == 1){
+            let nonDNFs = centiList.filter((_, index) =>DNFList[index] !== "DNF")
+            return formatCenti(Math.round((nonDNFs.reduce((a, b) => a + b, 0) - Math.min.apply(Math, nonDNFs)) / 3));
+        }
         return formatCenti(Math.round((centiList.reduce((a, b) => a + b, 0) - Math.max.apply(Math, centiList) - Math.min.apply(Math, centiList)) / 3));
     }
     else {
