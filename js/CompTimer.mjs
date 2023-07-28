@@ -42,15 +42,26 @@ document.querySelectorAll('.keypad-button').forEach(item => {
             timer.timeStr = timer.timeStr.slice(0, timer.timeStr.length - 1)
         }
         else if (key == "Submit") {
-            let newTimeStr = formatUserTime(timer.timeStr);
-            let centi = getTimeCenti(newTimeStr);
-            let time = getCurrentTime();
-            let scramble = document.getElementById("scramble").innerHTML;
-            let penalty = 0;
-            timer.appendData(centi, time, penalty, scramble)
-            timer.timeStr = ""
-            document.getElementById("scramble").innerHTML = await randomScrambleForEvent("333")
-            updateRoundResults();
+            if (document.getElementById("edit-popup").style.display == "block") {
+                let newTimeStr = formatUserTime(timer.timeStr);
+                let centi = getTimeCenti(newTimeStr);
+                timer.timeData = changeAt(timer.timeData, parseInt(document.getElementById("solve-num").innerHTML), "centi", centi)
+                document.getElementById("time-edit-display").innerHTML = formatCenti(centi)
+                timer.timeStr = ""
+                updateRoundResults();
+
+            }
+            else {
+                let newTimeStr = formatUserTime(timer.timeStr);
+                let centi = getTimeCenti(newTimeStr);
+                let time = getCurrentTime();
+                let scramble = document.getElementById("scramble").innerHTML;
+                let penalty = 0;
+                timer.appendData(centi, time, penalty, scramble)
+                timer.timeStr = ""
+                document.getElementById("scramble").innerHTML = await randomScrambleForEvent("333")
+                updateRoundResults();
+            }
         }
         else if (timer.timeStr.length < 6) {
             timer.timeStr += key;
@@ -103,6 +114,9 @@ const timesTables = document.getElementById('times-tables');
 timesTables.addEventListener('click', (event) => {
     if (event.target.classList.contains('table-cell')) {
         // Your event handling code here
+        if (event.target.dataset.solveindex == undefined){
+            return;
+        }
         let solveindex = parseInt(event.target.dataset.solveindex);
 
         let popup = document.getElementById("edit-popup");
