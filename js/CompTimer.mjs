@@ -290,8 +290,10 @@ function updateRoundResults() {
     let numRows = timer.timeData.shape[0];
     let lastIndex = numRows - 1
     let lastFinal = lastIndex - lastIndex % solvesPerRound;
-    let numRowsTable = 3;
+    let numRowsTable = 5;
     let startIndex = lastFinal - (numRowsTable - 1) * solvesPerRound;
+
+    let lastTen = [];
 
     for (let i = 0; i < numRowsTable; i++) {
 
@@ -311,10 +313,11 @@ function updateRoundResults() {
         let roundJSON = dfd.toJSON(round, { "format": "column" })
 
         tableHTML += '<tr class="table-row">';
-
+        let roundAvg = calculateAvg(round);
+        lastTen.push(roundAvg)
         for (let j = 0; j < solvesPerRound + 1; j++) {
             if (j == solvesPerRound) {
-                tableHTML += '<td class="table-cell">' + calculateAvg(round) + '</td>';
+                tableHTML += '<td class="table-cell">' + roundAvg + '</td>';
             }
             else {
                 try {
@@ -333,7 +336,25 @@ function updateRoundResults() {
 
     tableHTML += '</table>';
     document.getElementById("times-tables").innerHTML = tableHTML;
+    document.getElementById("meanofavg").innerHTML = getAverageOfConvertibleFloats(lastTen)
 }
+
+
+function getAverageOfConvertibleFloats(strList) {
+  const convertibleFloats = strList
+    .map(parseFloat) // Convert all strings to float (some will become NaN)
+    .filter(value => !isNaN(value)); // Filter out NaN values (non-convertible strings)
+
+  if (convertibleFloats.length === 0) {
+    return ""; // Handle the case when there are no convertible float values in the list
+  }
+
+  const sum = convertibleFloats.reduce((acc, val) => acc + val, 0);
+  const numFloats = convertibleFloats.length; 
+  const average = (sum /numFloats).toFixed(2)
+  return `mo${numFloats}avg5 = ${average}`;
+}
+
 
 function calculateAvg(dfRound) {
     let dfJSON = dfd.toJSON(dfRound, { "format": "row" })

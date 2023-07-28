@@ -44,6 +44,14 @@ html, body {
     flex: 3;
     color: black;
 }
+
+#meanofavg, #wpabpa {
+    font-family: Arial, Helvetica, sans-serif;
+    margin:1px;
+    text-align: right;
+}
+
+
 #progress-bar {
     background-color: green;
     flex: 0.1;
