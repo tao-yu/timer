@@ -100,7 +100,7 @@ rightPopUpButton.addEventListener("click", function () {
     else {
         rightPopUp.style.display = "block";
         leftPopUp.style.display = "none";
-        rightPopUp.innerHTML = timer.timeData.toString()//.replace(/\n/g, '<br>')
+        rightPopUp.innerHTML = JSON.stringify(dfd.toJSON(timer.timeData, {"format": "rows"}), null, 2)
     }
 });
 
