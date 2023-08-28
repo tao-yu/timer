@@ -59,6 +59,13 @@ html, body {
     margin: 1px
 }
 
+.keypad-button {
+    transition: background-color 0.3s ease;
+}
+.keypad-button:active {
+    background-color: #2980b9;
+}
+
 #time-entry {
     text-align: right;
     font-size: x-large;
